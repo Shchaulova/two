@@ -6,8 +6,9 @@ using namespace std;
 
 class Matrix3D
 {
-public:
+protected:
     double** m;
+public:
 // n
     Matrix3D(){
         m = new double* [3];
@@ -41,20 +42,18 @@ public:
 
         return res;
     }
-    /*Matrix3D operator* (const Matrix3D v){
-        Matrix3D res;
-        for (unsigned int j = 0; i < 3; j++){
-            for (unsigned int i = 0; i < 3; i++)
-                res.m[j][i]=v.m[j][i]+m[i][j];}
-        return res;
-    }*/
+
     Matrix3D operator* (const Matrix3D& v){
         Matrix3D res;
+        for (unsigned int j = 0; j < 3; j++){
+            for (unsigned int i = 0; i < 3; i++)
+                res.m[j][i] = 0;}
         for (unsigned int j = 0; j < 3; j++){
             for (unsigned int i = 0; i < 3; i++)
                 res.m[j][i]+=v.m[j][i]*m[i][j];}
         return res;
     }
+
     Matrix3D operator* (double a) const {
         Matrix3D res;
 
@@ -66,10 +65,8 @@ public:
 
     }
 
-    /*
-    double det(){
-        return ( m[1][1]*m[2][2]*m[3][3]+m[2][1]*m[3][2]*m[1][3]+m[1][2]*m[2][3]*m[3][1]-m[3][1]*m[2][2]*m[1][3]-m[2][1]*m[1][2]*m[3][3]-m[3][2]*m[2][3]*m[1][1]);
-    }*/
+
+
 
     void setValue(unsigned int i, unsigned int j, double value){
         m[i][j]=value;
@@ -78,17 +75,26 @@ public:
     double getValue(unsigned int i, unsigned int j) const{
         return m[i][j];
     }
+
+    friend  double det(const Matrix3D& v);
 };
 Matrix3D operator* (int a, const Matrix3D& v){
     return v * a;
 }
 
+double det(const Matrix3D& v) {
+    double det;
+    det = (v.getValue(0,0) * v.getValue(1, 1) * v.getValue(2, 2) + v.getValue(1, 0) * v.getValue(2, 1) * v.getValue(0, 2) + v.getValue(0, 1)* v.getValue(1, 2)* v.getValue(2, 0) -
+           v.getValue(2, 0) * v.getValue(1, 1) * v.getValue(0, 2) - v.getValue(1, 0) * v.getValue(0, 1) * v.getValue(2, 2) - v.getValue(2, 1) * v.getValue(1, 2) * v.getValue(0,0));
+    return det;
+}
 
 class Vector3D
 {
+protected:
+    double* m;
 public:
 
-    double* m;
 // n
     Vector3D(){
         m=new double[3];
@@ -131,7 +137,7 @@ public:
             res.m[i]=m[i]-v.m[i];
         return res;
     }
-// + ,
+//
 //
     Vector3D operator+ (const Vector3D& v){
         Vector3D res;
@@ -151,10 +157,11 @@ public:
         Vector3D res;
         for (unsigned int i = 0; i < 3; i++)
             for (unsigned int j = 0; j < 3; j++)
-                res.m[i]+= b.m[j][i]*m[j];
+                res.setValue(i, b.getValue(j, i)*m[j] + res.getValue(i));
         return res;
     }
-};
+   /* friend Vector3D operator* (double a, const Vector3D& v);*/
+    };
 Vector3D operator* (double a, const Vector3D& v){
     return v * a;
 }
@@ -222,7 +229,7 @@ int main()
     for (unsigned int i = 0; i < 3; i++)
     {
         for (unsigned int j = 0; j < 3; j++)
-            cout << (x.m[i][j]) << " ";
+            cout << (x.getValue(i, j)) << " ";
         cout<<endl;
     }
     cout<<endl;
@@ -231,7 +238,7 @@ int main()
     for (unsigned int i = 0; i < 3; i++)
     {
         for (unsigned int j = 0; j < 3; j++)
-            cout << (y.m[i][j]) << " ";
+            cout << (y.getValue(i, j)) << " ";
         cout<<endl;
     }
     cout<<endl;
@@ -239,7 +246,6 @@ int main()
 
     Matrix3D q = x + y;
     Matrix3D w = x - y;
-    //Matrix3D i = x * y;
     Vector3D o = a * x;
     Matrix3D u = y * 2;
 
@@ -281,7 +287,7 @@ int main()
     for (unsigned int i = 0; i < 3; i++)
     {
         for (unsigned int j = 0; j < 3; j++)
-            cout << (x.m[i][j]) << " ";
+            cout << (x.getValue(i, j)) << " ";
         cout<<endl;
     }
     cout<<endl;
@@ -290,9 +296,10 @@ int main()
     for (unsigned int i = 0; i < 3; i++)
     {
         for (unsigned int j = 0; j < 3; j++)
-            cout << (y.m[i][j]) << " ";
+            cout << (y.getValue(i, j)) << " ";
         cout<<endl;
     }
     cout<<endl;
-
+    printf("determinant\n");
+    cout<<det(y)<<" ";
 }
