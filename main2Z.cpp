@@ -22,7 +22,7 @@ public:
 //
     ~Matrix3D(){
         for (int i = 0; i < 3; i++)
-            delete [] m[i];
+            delete[] m[i];
         delete[] m;}
 
     Matrix3D operator- (const Matrix3D& v) const{
