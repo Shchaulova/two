@@ -25,7 +25,7 @@ public:
             delete [] m[i];
         delete[] m;}
 
-    Matrix3D operator- (const Matrix3D& v){
+    Matrix3D operator- (const Matrix3D& v) const{
         Matrix3D res;
         for (unsigned int i = 0; i < 3; i++)
             for (unsigned int j = 0; j < 3; j++)
@@ -34,7 +34,7 @@ public:
     }
 // + ,
 //
-    Matrix3D operator+ (const Matrix3D& v){
+    Matrix3D operator+ (const Matrix3D& v) const{
         Matrix3D res;
         for (unsigned int i = 0; i < 3; i++)
             for (unsigned int j = 0; j < 3; j++)
@@ -43,7 +43,7 @@ public:
         return res;
     }
 
-    Matrix3D operator* (const Matrix3D& v){
+    Matrix3D operator* (const Matrix3D& v) const{
         Matrix3D res;
         for (unsigned int j = 0; j < 3; j++){
             for (unsigned int i = 0; i < 3; i++)
@@ -82,7 +82,7 @@ Matrix3D operator* (int a, const Matrix3D& v){
     return v * a;
 }
 
-double det(const Matrix3D& v) {
+double det(const Matrix3D& v){
     double det;
     det = (v.getValue(0,0) * v.getValue(1, 1) * v.getValue(2, 2) + v.getValue(1, 0) * v.getValue(2, 1) * v.getValue(0, 2) + v.getValue(0, 1)* v.getValue(1, 2)* v.getValue(2, 0) -
            v.getValue(2, 0) * v.getValue(1, 1) * v.getValue(0, 2) - v.getValue(1, 0) * v.getValue(0, 1) * v.getValue(2, 2) - v.getValue(2, 1) * v.getValue(1, 2) * v.getValue(0,0));
@@ -122,7 +122,7 @@ public:
 
 // == ,
 // скалярное произв
-    double operator* (const Vector3D& v) {
+    double operator* (const Vector3D& v) const {
         double resk=0;
         for (unsigned int i = 0; i < 3; i++ )
            resk += v.m[i]*m[i];
@@ -131,7 +131,7 @@ public:
 
 // != ,
 // ,
-    Vector3D operator- (const Vector3D& v){
+    Vector3D operator- (const Vector3D& v) const{
         Vector3D res;
         for (unsigned int i = 0; i < 3; i++)
             res.m[i]=m[i]-v.m[i];
@@ -139,7 +139,7 @@ public:
     }
 //
 //
-    Vector3D operator+ (const Vector3D& v){
+    Vector3D operator+ (const Vector3D& v) const{
         Vector3D res;
         for (unsigned int i = 0; i < 3; i++)
             res.m[i]=v.m[i]+m[i];
